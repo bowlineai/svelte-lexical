@@ -9,7 +9,7 @@
     InsertImageUriDialogBody,
     getActiveEditor,
     getEditor,
-  } from 'svelte-lexical';
+  } from '@bowline/svelte-lexical';
 
   import landscapeImage from './images/landscape.jpg';
   import yellowFlowerImage from './images/yellow-flower.jpg';

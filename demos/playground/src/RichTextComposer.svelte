@@ -38,7 +38,7 @@
     CaptionEditorCollaborationPlugin,
     CaptionEditorHistoryPlugin,
     CAN_USE_DOM,
-  } from 'svelte-lexical';
+  } from '@bowline/svelte-lexical';
   import {prepopulatedRichText} from './prepopulatedRichText';
   import type {SettingsStore} from './settings/setttingsStore';
   import PlaygroundEditorTheme from './themes/PlaygroundEditorTheme';

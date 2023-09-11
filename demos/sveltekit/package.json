@@ -20,7 +20,7 @@
   },
   "type": "module",
   "dependencies": {
-    "svelte-lexical": "0.3.4",
+    "@bowline/svelte-lexical": "0.3.4",
     "svelte-preprocess": "^5.0.3"
   }
 }

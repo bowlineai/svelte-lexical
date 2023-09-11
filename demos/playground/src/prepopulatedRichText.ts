@@ -7,7 +7,7 @@ import {
   $createQuoteNode,
   $createTextNode,
   $getRoot,
-} from 'svelte-lexical';
+} from '@bowline/svelte-lexical';
 
 export function prepopulatedRichText() {
   const root = $getRoot();

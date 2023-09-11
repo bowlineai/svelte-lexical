@@ -1,12 +1,12 @@
 {
-  "name": "svelte-lexical",
+  "name": "@bowline/svelte-lexical",
   "description": "Rich Text editor for Svelte based on lexical",
   "version": "0.3.4",
   "type": "module",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/umaranis/svelte-lexical",
+    "url": "https://github.com/bowlineai/svelte-lexical",
     "directory": "svelte-lexical"
   },
   "svelte": "src/index.ts",
