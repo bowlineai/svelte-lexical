@@ -31,6 +31,7 @@ export {HashtagNode} from './core/plugins/HashtagNode';
 export {AutoLinkNode, LinkNode} from '@lexical/link';
 export {CodeNode, CodeHighlightNode} from '@lexical/code';
 export type {Provider} from '@lexical/yjs';
+export * as lexical from 'lexical';
 
 // toolbar
 export {default as ToolbarRichText} from './components/richtext/ToolbarRichText.svelte';

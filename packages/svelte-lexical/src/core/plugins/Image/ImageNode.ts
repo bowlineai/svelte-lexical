@@ -164,6 +164,11 @@ export class ImageNode extends DecoratorNode<DecoratorImageType> {
     };
   }
 
+  setSrc(src: string): void {
+    const writable = this.getWritable();
+    writable.__src = src;
+  }
+
   setWidthAndHeight(
     width: 'inherit' | number,
     height: 'inherit' | number,

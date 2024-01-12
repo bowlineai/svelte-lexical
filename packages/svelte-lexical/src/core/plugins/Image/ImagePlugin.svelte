@@ -30,6 +30,7 @@
     DRAGOVER_COMMAND,
     DRAGSTART_COMMAND,
     DROP_COMMAND,
+    PASTE_COMMAND,
     type LexicalCommand,
     type LexicalEditor,
   } from 'lexical';
@@ -38,7 +39,7 @@
     mergeRegister,
   } from '@lexical/utils';
 
-  import {onMount} from 'svelte';
+  import {onMount, createEventDispatcher} from 'svelte';
   import {
     $createImageNode as createImageNode,
     $isImageNode as isImageNode,
@@ -49,6 +50,7 @@
   import {CAN_USE_DOM} from '../../../environment/canUseDOM';
 
   const editor: LexicalEditor = getEditor();
+  const dispatcher = createEventDispatcher();
 
   const TRANSPARENT_IMAGE =
     'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
@@ -66,15 +68,16 @@
       editor.registerCommand<InsertImagePayload>(
         INSERT_IMAGE_COMMAND,
         (payload) => {
-          const imageNode = createImageNode(payload);
-          insertNodes([imageNode]);
-          if (isRootOrShadowRoot(imageNode.getParentOrThrow())) {
-            wrapNodeInElement(imageNode, createParagraphNode).selectEnd();
-          }
-
-          return true;
+          return onInsert(payload);
         },
         COMMAND_PRIORITY_EDITOR,
+      ),
+      editor.registerCommand<ClipboardEvent>(
+        PASTE_COMMAND,
+        (event) => {
+          return onPaste(event);
+        },
+        COMMAND_PRIORITY_HIGH,
       ),
       editor.registerCommand<DragEvent>(
         DRAGSTART_COMMAND,
@@ -99,6 +102,41 @@
       ),
     );
   });
+
+  function onInsert(payload: ImagePayload): boolean {
+    editor.update(() => {
+      let imageNode = createImageNode(payload);
+      insertNodes([imageNode]);
+      if (isRootOrShadowRoot(imageNode.getParentOrThrow())) {
+        wrapNodeInElement(imageNode, createParagraphNode).selectEnd();
+      }
+      dispatcher('insert', {src: payload.src, node: imageNode});
+    });
+
+    return true;
+  }
+
+  function onPaste(event: ClipboardEvent): boolean {
+    const clipboardFiles = event.clipboardData?.files;
+    if (
+      !clipboardFiles ||
+      clipboardFiles.length == 0 ||
+      clipboardFiles[0].type.endsWith('/image')
+    ) {
+      return false;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      onInsert({
+        src: reader.result?.toString() || '',
+        altText: '',
+      });
+    };
+    reader.readAsDataURL(clipboardFiles[0]);
+
+    return true;
+  }
 
   function onDragStart(event: DragEvent): boolean {
     const node = getImageNodeInSelection();

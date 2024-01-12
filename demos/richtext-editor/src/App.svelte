@@ -1,5 +1,5 @@
 <script>
-  import {RichTextComposer} from 'svelte-lexical';
+  import {RichTextComposer} from '@bowline/svelte-lexical';
   import PlaygroundEditorTheme from './themes/PlaygroundEditorTheme';
 </script>
 

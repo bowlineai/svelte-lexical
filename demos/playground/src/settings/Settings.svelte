@@ -15,6 +15,7 @@
     isCharLimitUtf8: boolean,
     isAutocomplete: boolean,
     showTreeView: boolean,
+    isEditable: boolean,
     showNestedEditorTreeView: boolean,
     disableBeforeInput: boolean,
     showTableOfContents: boolean;
@@ -33,6 +34,7 @@
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     isAutocomplete = $settings.isAutocomplete;
     showTreeView = $settings.showTreeView;
+    isEditable = $settings.isEditable;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     showNestedEditorTreeView = $settings.showNestedEditorTreeView;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -84,6 +86,10 @@
       on:click={() => settings.setOption('showTreeView', !showTreeView)}
       checked={showTreeView}
       text="Debug View" />
+    <Switch
+      on:click={() => settings.setOption('isEditable', !isEditable)}
+      checked={isEditable}
+      text="Editable" />
     <!-- <Switch
       on:click={() =>
         settings.setOption(

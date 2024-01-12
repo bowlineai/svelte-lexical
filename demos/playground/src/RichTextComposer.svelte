@@ -1,4 +1,6 @@
 <script lang="ts">
+  import type { SvelteComponent } from 'svelte';
+  import type { LexicalEditor } from '@bowline/svelte-lexical';
   import {getContext, onMount} from 'svelte';
   import {
     Composer,
@@ -38,7 +40,7 @@
     CaptionEditorCollaborationPlugin,
     CaptionEditorHistoryPlugin,
     CAN_USE_DOM,
-  } from 'svelte-lexical';
+  } from '@bowline/svelte-lexical';
   import {prepopulatedRichText} from './prepopulatedRichText';
   import type {SettingsStore} from './settings/setttingsStore';
   import PlaygroundEditorTheme from './themes/PlaygroundEditorTheme';
@@ -61,9 +63,11 @@
 
   let isSmallWidthViewport = false;
 
+  let composer: SvelteComponent
   let editorDiv;
 
   const initialConfig = {
+    editable: $settings.isEditable,
     editorState: $settings.isCollab
       ? null
       : $settings.emptyEditor
@@ -106,11 +110,20 @@
       window.removeEventListener('resize', updateViewPortWidth);
     };
   });
+
+  const updateEditable = () => {
+    if (composer) {
+      const editor = composer.getEditor() as LexicalEditor
+      editor.setEditable($settings.isEditable);
+    }
+  };
+
+  $: $settings.isEditable, updateEditable()
 </script>
 
-<Composer {initialConfig}>
+<Composer {initialConfig} bind:this={composer}>
   <div class="editor-shell">
-    {#if $settings.isRichText}
+    {#if $settings.isRichText && $settings.isEditable}
       <ToolbarPlayground />
     {/if}
     <div class="editor-container tree-view">

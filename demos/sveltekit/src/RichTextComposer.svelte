@@ -10,7 +10,7 @@
     CheckListPlugin,
     HorizontalRulePlugin,
     ImagePlugin,
-  } from 'svelte-lexical';
+  } from '@bowline/svelte-lexical';
   import {
     HeadingNode,
     QuoteNode,
@@ -18,13 +18,13 @@
     ListItemNode,
     HorizontalRuleNode,
     ImageNode,
-  } from 'svelte-lexical';
+  } from '@bowline/svelte-lexical';
   import PlaygroundEditorTheme from './themes/PlaygroundEditorTheme';
   import {
     $getRoot as getRoot,
     $createTextNode as createTextNode,
     $createParagraphNode as createParagraphNode,
-  } from 'svelte-lexical';
+  } from '@bowline/svelte-lexical';
 
   const initialConfig = {
     theme: PlaygroundEditorTheme,
@@ -45,7 +45,7 @@
         const paragraph = createParagraphNode();
         paragraph.append(
           createTextNode('This demo environment is built with '),
-          createTextNode('svelte-lexical').toggleFormat('code'),
+          createTextNode('@bowline/svelte-lexical').toggleFormat('code'),
           createTextNode('.'),
           createTextNode(' Try typing in '),
           createTextNode('some text').toggleFormat('bold'),

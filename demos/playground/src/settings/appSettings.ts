@@ -16,6 +16,7 @@ export type SettingName =
   | 'isCharLimitUtf8'
   | 'isAutocomplete'
   | 'showTreeView'
+  | 'isEditable'
   | 'showNestedEditorTreeView'
   | 'emptyEditor'
   | 'showTableOfContents'
@@ -45,4 +46,5 @@ export const DEFAULT_SETTINGS: Settings = {
   showTreeView: true,
   tableCellMerge: true,
   tableCellBackgroundColor: true,
+  isEditable: true,
 };

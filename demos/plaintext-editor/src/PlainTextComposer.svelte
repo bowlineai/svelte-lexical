@@ -5,7 +5,7 @@
     ActionBar,
     PlainTextPlugin,
     HistoryPlugin,
-  } from 'svelte-lexical';
+  } from '@bowline/svelte-lexical';
   import PlaygroundEditorTheme from './themes/PlaygroundEditorTheme';
 
   const initialConfig = {

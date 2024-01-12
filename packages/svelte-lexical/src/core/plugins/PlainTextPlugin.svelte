@@ -1,7 +1,10 @@
 <script lang="ts">
   import {onMount} from 'svelte';
-  import {registerPlainText} from '@lexical/plain-text';
+  import lexicalPlainText from '@lexical/plain-text';
   import {getEditor} from '../composerContext';
+
+  // workaround for CommonJS module
+  const { registerPlainText } = lexicalPlainText;
 
   const editor = getEditor();
 

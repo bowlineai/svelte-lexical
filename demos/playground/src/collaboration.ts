@@ -1,6 +1,6 @@
 import {Doc} from 'yjs';
 import {WebsocketProvider} from 'y-websocket';
-import type {Provider} from 'svelte-lexical';
+import type {Provider} from '@bowline/svelte-lexical';
 
 // parent dom -> child doc
 export function createWebsocketProvider(
