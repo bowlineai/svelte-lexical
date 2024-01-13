@@ -1,28 +1,27 @@
 <script lang="ts">
-  import {mergeRegister} from '@lexical/utils';
-  import {createUndoManager, type Binding} from '@lexical/yjs';
-  import {
+  import pkgutils from '@lexical/utils';
+  const {mergeRegister} = pkgutils;
+  import type {Binding} from '@lexical/yjs';
+  import pkgyjs from '@lexical/yjs';
+  const {createUndoManager} = pkgyjs;
+  import type {LexicalEditor} from 'lexical';
+  import pkgLexical from 'lexical';
+  const {
     COMMAND_PRIORITY_EDITOR,
     REDO_COMMAND,
     UNDO_COMMAND,
-    type LexicalEditor,
-  } from 'lexical';
+  } = pkgLexical;
   import {onMount} from 'svelte';
-
   export let editor: LexicalEditor;
   export let binding: Binding;
-
   const undoManager = createUndoManager(binding, binding.root.getSharedType());
-
   onMount(() => {
     const undo = () => {
       undoManager.undo();
     };
-
     const redo = () => {
       undoManager.redo();
     };
-
     return mergeRegister(
       editor.registerCommand(
         UNDO_COMMAND,
@@ -42,7 +41,6 @@
       ),
     );
   });
-
   export function clearHistory() {
     undoManager.clear();
   }

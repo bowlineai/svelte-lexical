@@ -5,7 +5,6 @@
   export let value: string;
   export let id = '';
 </script>
-
 <div class="Input__wrapper">
   <label class="Input__label" for={id}>{label}</label>
   <input

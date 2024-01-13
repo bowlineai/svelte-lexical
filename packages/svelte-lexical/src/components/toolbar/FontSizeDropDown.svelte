@@ -1,15 +1,16 @@
 <script lang="ts">
-  import {$patchStyleText as patchStyleText} from '@lexical/selection';
-  import {
-    $getSelection as getSelection,
-    $isRangeSelection as isRangeSelection,
-  } from 'lexical';
+  import pkgselection from '@lexical/selection';
+  const {  $patchStyleText: patchStyleText,  } = pkgselection;
+  import pkgLexical from 'lexical';
+  const {
+     $getSelection: getSelection,
+     $isRangeSelection: isRangeSelection,
+    } = pkgLexical;
   import {getContext} from 'svelte';
   import type {Writable} from 'svelte/store';
   import {getEditor, getIsEditable} from '../../core/composerContext';
   import DropDown from '../generic/dropdown/DropDown.svelte';
   import DropDownItem from '../generic/dropdown/DropDownItem.svelte';
-
   const FONT_SIZE_OPTIONS: [string, string][] = [
     ['10px', '10px'],
     ['11px', '11px'],
@@ -23,12 +24,10 @@
     ['19px', '19px'],
     ['20px', '20px'],
   ];
-
   const editor = getEditor();
   const value: Writable<string> = getContext('fontSize');
   const style = 'font-size';
   const isEditable = getIsEditable();
-
   const handleClick = (option: string) => {
     editor.update(() => {
       const selection = getSelection();
@@ -39,10 +38,8 @@
       }
     });
   };
-
   const buttonAriaLabel = 'Formatting options for font size';
 </script>
-
 <DropDown
   disabled={!$isEditable}
   buttonClassName={'toolbar-item ' + style}

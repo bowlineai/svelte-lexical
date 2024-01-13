@@ -1,15 +1,16 @@
 <script lang="ts">
-  import {$patchStyleText as patchStyleText} from '@lexical/selection';
-  import {
-    $getSelection as getSelection,
-    $isRangeSelection as isRangeSelection,
-  } from 'lexical';
+  import pkgselection from '@lexical/selection';
+  const {  $patchStyleText: patchStyleText,  } = pkgselection;
+  import pkgLexical from 'lexical';
+  const {
+     $getSelection: getSelection,
+     $isRangeSelection: isRangeSelection,
+    } = pkgLexical;
   import {getContext} from 'svelte';
   import type {Writable} from 'svelte/store';
   import {getEditor, getIsEditable} from '../../core/composerContext';
   import DropDown from '../generic/dropdown/DropDown.svelte';
   import DropDownItem from '../generic/dropdown/DropDownItem.svelte';
-
   const FONT_FAMILY_OPTIONS: [string, string][] = [
     ['Arial', 'Arial'],
     ['Courier New', 'Courier New'],
@@ -18,12 +19,10 @@
     ['Trebuchet MS', 'Trebuchet MS'],
     ['Verdana', 'Verdana'],
   ];
-
   const editor = getEditor();
   const value: Writable<string> = getContext('fontFamily');
   const style = 'font-family';
   const isEditable = getIsEditable();
-
   const handleClick = (option: string) => {
     editor.update(() => {
       const selection = getSelection();
@@ -34,10 +33,8 @@
       }
     });
   };
-
   const buttonAriaLabel = 'Formatting options for font family';
 </script>
-
 <DropDown
   disabled={!$isEditable}
   buttonClassName={'toolbar-item ' + style}

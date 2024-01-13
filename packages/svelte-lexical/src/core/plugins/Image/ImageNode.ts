@@ -10,18 +10,16 @@ import type {
   SerializedLexicalNode,
   Spread,
 } from 'lexical';
-
-import {$applyNodeReplacement, createEditor, DecoratorNode} from 'lexical';
+import pkgLexical from 'lexical';
+const {$applyNodeReplacement, createEditor, DecoratorNode} = pkgLexical;
 import type {ComponentProps, SvelteComponent} from 'svelte';
 import ImageComponent from './ImageComponent.svelte';
 /*import * as React from 'react';
 import {Suspense} from 'react';*/
-
 /*const ImageComponent = React.lazy(
   // @ts-ignore
   () => import('./ImageComponent'),
 );*/
-
 export interface ImagePayload {
   altText: string;
   caption?: LexicalEditor;
@@ -33,7 +31,6 @@ export interface ImagePayload {
   width?: number;
   captionsEnabled?: boolean;
 }
-
 function convertImageElement(domNode: Node): null | DOMConversionOutput {
   if (domNode instanceof HTMLImageElement) {
     const {alt: altText, src, width, height} = domNode;
@@ -42,7 +39,6 @@ function convertImageElement(domNode: Node): null | DOMConversionOutput {
   }
   return null;
 }
-
 export type SerializedImageNode = Spread<
   {
     altText: string;
@@ -55,13 +51,11 @@ export type SerializedImageNode = Spread<
   },
   SerializedLexicalNode
 >;
-
 type DecoratorImageType = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   componentClass: typeof SvelteComponent<any>;
   props: ComponentProps<ImageComponent>;
 };
-
 export class ImageNode extends DecoratorNode<DecoratorImageType> {
   __src: string;
   __altText: string;
@@ -72,11 +66,9 @@ export class ImageNode extends DecoratorNode<DecoratorImageType> {
   __caption: LexicalEditor;
   // Captions cannot yet be used within editor cells
   __captionsEnabled: boolean;
-
   static getType(): string {
     return 'image';
   }
-
   static clone(node: ImageNode): ImageNode {
     return new ImageNode(
       node.__src,
@@ -90,7 +82,6 @@ export class ImageNode extends DecoratorNode<DecoratorImageType> {
       node.__key,
     );
   }
-
   static importJSON(serializedNode: SerializedImageNode): ImageNode {
     const {altText, height, width, maxWidth, caption, src, showCaption} =
       serializedNode;
@@ -109,7 +100,6 @@ export class ImageNode extends DecoratorNode<DecoratorImageType> {
     }
     return node;
   }
-
   exportDOM(): DOMExportOutput {
     const element = document.createElement('img');
     element.setAttribute('src', this.__src);
@@ -118,7 +108,6 @@ export class ImageNode extends DecoratorNode<DecoratorImageType> {
     element.setAttribute('height', this.__height.toString());
     return {element};
   }
-
   static importDOM(): DOMConversionMap | null {
     return {
       img: (node: Node) => ({
@@ -127,7 +116,6 @@ export class ImageNode extends DecoratorNode<DecoratorImageType> {
       }),
     };
   }
-
   constructor(
     src: string,
     altText: string,
@@ -149,7 +137,6 @@ export class ImageNode extends DecoratorNode<DecoratorImageType> {
     this.__caption = caption || createEditor();
     this.__captionsEnabled = captionsEnabled || captionsEnabled === undefined;
   }
-
   exportJSON(): SerializedImageNode {
     return {
       altText: this.getAltText(),
@@ -163,12 +150,10 @@ export class ImageNode extends DecoratorNode<DecoratorImageType> {
       width: this.__width === 'inherit' ? 0 : this.__width,
     };
   }
-
   setSrc(src: string): void {
     const writable = this.getWritable();
     writable.__src = src;
   }
-
   setWidthAndHeight(
     width: 'inherit' | number,
     height: 'inherit' | number,
@@ -177,14 +162,11 @@ export class ImageNode extends DecoratorNode<DecoratorImageType> {
     writable.__width = width;
     writable.__height = height;
   }
-
   setShowCaption(showCaption: boolean): void {
     const writable = this.getWritable();
     writable.__showCaption = showCaption;
   }
-
   // View
-
   createDOM(config: EditorConfig): HTMLElement {
     const span = document.createElement('span');
     const theme = config.theme;
@@ -194,19 +176,15 @@ export class ImageNode extends DecoratorNode<DecoratorImageType> {
     }
     return span;
   }
-
   updateDOM(): false {
     return false;
   }
-
   getSrc(): string {
     return this.__src;
   }
-
   getAltText(): string {
     return this.__altText;
   }
-
   decorate(editor: LexicalEditor, config: EditorConfig): DecoratorImageType {
     return {
       componentClass: ImageComponent,
@@ -226,7 +204,6 @@ export class ImageNode extends DecoratorNode<DecoratorImageType> {
     };
   }
 }
-
 export function $createImageNode({
   altText,
   height,
@@ -252,7 +229,6 @@ export function $createImageNode({
     ),
   );
 }
-
 export function $isImageNode(
   node: LexicalNode | null | undefined,
 ): node is ImageNode {

@@ -1,7 +1,6 @@
 <script lang="ts">
   import TreeView from './TreeView.svelte';
 </script>
-
 <TreeView
   viewClassName="tree-view-output"
   treeTypeButtonClassName="debug-treetype-button"

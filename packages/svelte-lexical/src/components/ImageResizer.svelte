@@ -1,6 +1,5 @@
 <script lang="ts">
   import type {LexicalEditor} from 'lexical';
-
   export let onResizeStart: () => void;
   export let onResizeEnd: (
     width: 'inherit' | number,
@@ -13,25 +12,20 @@
   export let showCaption: boolean;
   export let setShowCaption: (show: boolean) => void;
   export let captionsEnabled: boolean;
-
   let controlWrapperRef: HTMLDivElement;
-
   function clamp(value: number, min: number, max: number) {
     return Math.min(Math.max(value, min), max);
   }
-
   const Direction = {
     east: 1 << 0,
     north: 1 << 3,
     south: 1 << 1,
     west: 1 << 2,
   };
-
   const userSelect = {
     priority: '',
     value: 'default',
   };
-
   const positioningRef: {
     currentHeight: 'inherit' | number;
     currentWidth: 'inherit' | number;
@@ -53,7 +47,6 @@
     startX: 0,
     startY: 0,
   };
-
   const editorRootElement = editor.getRootElement();
   // Find max width, accounting for editor padding.
   const maxWidthContainer = maxWidth
@@ -65,19 +58,15 @@
     editorRootElement !== null
       ? editorRootElement.getBoundingClientRect().height - 20
       : 100;
-
   const minWidth = 100;
   const minHeight = 100;
-
   const setStartCursor = (direction: number) => {
     const ew = direction === Direction.east || direction === Direction.west;
     const ns = direction === Direction.north || direction === Direction.south;
     const nwse =
       (direction & Direction.north && direction & Direction.west) ||
       (direction & Direction.south && direction & Direction.east);
-
     const cursorDir = ew ? 'ew' : ns ? 'ns' : nwse ? 'nwse' : 'nesw';
-
     if (editorRootElement !== null) {
       editorRootElement.style.setProperty(
         'cursor',
@@ -104,7 +93,6 @@
       );
     }
   };
-
   const setEndCursor = () => {
     if (editorRootElement !== null) {
       editorRootElement.style.setProperty('cursor', 'default');
@@ -118,15 +106,12 @@
       );
     }
   };
-
   const handlePointerDown = (event: PointerEvent, direction: number) => {
     if (!editor.isEditable()) {
       return;
     }
-
     const image = imageRef;
     const controlWrapper = controlWrapperRef;
-
     if (image !== null && controlWrapper !== null) {
       const {width, height} = image.getBoundingClientRect();
       const positioning = positioningRef;
@@ -139,40 +124,32 @@
       positioning.startY = event.clientY;
       positioning.isResizing = true;
       positioning.direction = direction;
-
       setStartCursor(direction);
       onResizeStart();
-
       controlWrapper.classList.add('image-control-wrapper--resizing');
       image.style.height = `${height}px`;
       image.style.width = `${width}px`;
-
       document.addEventListener('pointermove', handlePointerMove);
       document.addEventListener('pointerup', handlePointerUp);
     }
   };
-
   const handlePointerMove = (event: PointerEvent) => {
     const image = imageRef;
     const positioning = positioningRef;
-
     const isHorizontal =
       positioning.direction & (Direction.east | Direction.west);
     const isVertical =
       positioning.direction & (Direction.south | Direction.north);
-
     if (image !== null && positioning.isResizing) {
       // Corner cursor
       if (isHorizontal && isVertical) {
         let diff = Math.floor(positioning.startX - event.clientX);
         diff = positioning.direction & Direction.east ? -diff : diff;
-
         const width = clamp(
           positioning.startWidth + diff,
           minWidth,
           maxWidthContainer,
         );
-
         const height = width / positioning.ratio;
         image.style.width = `${width}px`;
         image.style.height = `${height}px`;
@@ -181,31 +158,26 @@
       } else if (isVertical) {
         let diff = Math.floor(positioning.startY - event.clientY);
         diff = positioning.direction & Direction.south ? -diff : diff;
-
         const height = clamp(
           positioning.startHeight + diff,
           minHeight,
           maxHeightContainer,
         );
-
         image.style.height = `${height}px`;
         positioning.currentHeight = height;
       } else {
         let diff = Math.floor(positioning.startX - event.clientX);
         diff = positioning.direction & Direction.east ? -diff : diff;
-
         const width = clamp(
           positioning.startWidth + diff,
           minWidth,
           maxWidthContainer,
         );
-
         image.style.width = `${width}px`;
         positioning.currentWidth = width;
       }
     }
   };
-
   const handlePointerUp = () => {
     const image = imageRef;
     const positioning = positioningRef;
@@ -221,18 +193,14 @@
       positioning.currentWidth = 0;
       positioning.currentHeight = 0;
       positioning.isResizing = false;
-
       controlWrapper.classList.remove('image-control-wrapper--resizing');
-
       setEndCursor();
       onResizeEnd(width, height);
-
       document.removeEventListener('pointermove', handlePointerMove);
       document.removeEventListener('pointerup', handlePointerUp);
     }
   };
 </script>
-
 <div bind:this={controlWrapperRef}>
   {#if !showCaption && captionsEnabled}
     <button

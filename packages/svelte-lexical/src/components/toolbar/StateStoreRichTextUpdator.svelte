@@ -1,34 +1,39 @@
 <script lang="ts">
-  import {
-    $getSelection as getSelection,
-    $isRangeSelection as isRangeSelection,
-    $isRootOrShadowRoot as isRootOrShadowRoot,
+  import pkgLexical from 'lexical';
+  const {
+    $getSelection: getSelection,
+    $isRangeSelection: isRangeSelection,
+    $isRootOrShadowRoot: isRootOrShadowRoot,
     COMMAND_PRIORITY_CRITICAL,
     SELECTION_CHANGE_COMMAND,
-  } from 'lexical';
-  import {
-    $isParentElementRTL as isParentElementRTL,
-    $getSelectionStyleValueForProperty as getSelectionStyleValueForProperty,
-  } from '@lexical/selection';
-  import {$isHeadingNode as isHeadingNode} from '@lexical/rich-text';
-  import {ListNode, $isListNode as isListNode} from '@lexical/list';
-  import {
-    $findMatchingParent as findMatchingParent,
-    $getNearestNodeOfType as getNearestNodeOfType,
+  } = pkgLexical;
+  import pkgselection from '@lexical/selection';
+  const {
+    $isParentElementRTL: isParentElementRTL,
+    $getSelectionStyleValueForProperty: getSelectionStyleValueForProperty,
+  } = pkgselection;
+  import pkgrich from '@lexical/rich-text';
+  const {$isHeadingNode: isHeadingNode} = pkgrich;
+  import type {ListNode} from '@lexical/list';
+  import pkglist from '@lexical/list';
+  const {ListNode: ListNodeClass, $isListNode: isListNode} = pkglist;
+  import pkgutils from '@lexical/utils';
+  const {
+    $findMatchingParent: findMatchingParent,
+    $getNearestNodeOfType: getNearestNodeOfType,
     mergeRegister,
-  } from '@lexical/utils';
+  } = pkgutils;
   import {getContext, onMount} from 'svelte';
-  import {$isCodeNode as isCodeNode, CODE_LANGUAGE_MAP} from '@lexical/code';
-
+  import pkgcode from '@lexical/code';
+  const {$isCodeNode: isCodeNode, CODE_LANGUAGE_MAP} = pkgcode;
   import {getActiveEditor, getEditor} from '../../core/composerContext';
   import type {Writable} from 'svelte/store';
   import getSelectedNode from './getSelectionInfo';
-  import {$isLinkNode as isLinkNode} from '@lexical/link';
+  import pkglink from '@lexical/link';
+  const {$isLinkNode: isLinkNode} = pkglink;
   import {blockTypeToBlockName} from './BlockFormatDropDown/blockTypeToBlockName';
-
   const editor = getEditor();
   const activeEditor = getActiveEditor();
-
   const isBold: Writable<boolean> = getContext('isBold');
   const isItalic: Writable<boolean> = getContext('isItalic');
   const isUnderline: Writable<boolean> = getContext('isUnderline');
@@ -46,7 +51,6 @@
   const fontColor: Writable<string> = getContext('fontColor');
   const bgColor: Writable<string> = getContext('bgColor');
   const isLink: Writable<boolean> = getContext('isLink');
-
   const updateToolbar = () => {
     const selection = getSelection();
     if (isRangeSelection(selection)) {
@@ -58,14 +62,11 @@
               const parent = e.getParent();
               return parent !== null && isRootOrShadowRoot(parent);
             });
-
       if (element === null) {
         element = anchorNode.getTopLevelElementOrThrow();
       }
-
       const elementKey = element.getKey();
       const elementDOM = $activeEditor.getElementByKey(elementKey);
-
       // Update text format
       $isBold = selection.hasFormat('bold');
       $isItalic = selection.hasFormat('italic');
@@ -75,7 +76,6 @@
       $isSuperscript = selection.hasFormat('superscript');
       $isCode = selection.hasFormat('code');
       $isRTL = isParentElementRTL(selection);
-
       // Update links
       const node = getSelectedNode(selection);
       const parent = node.getParent();
@@ -84,13 +84,12 @@
       } else {
         $isLink = false;
       }
-
       if (elementDOM !== null) {
         $selectedElementKey = elementKey;
         if (isListNode(element)) {
           const parentList = getNearestNodeOfType<ListNode>(
             anchorNode,
-            ListNode,
+            ListNodeClass,
           );
           const type = parentList
             ? parentList.getListType()
@@ -136,7 +135,6 @@
       );
     }
   };
-
   // unregisters onDestory using returned callback
   onMount(() => {
     mergeRegister(

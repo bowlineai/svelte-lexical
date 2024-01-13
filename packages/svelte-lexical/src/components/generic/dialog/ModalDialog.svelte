@@ -1,8 +1,6 @@
 <script lang="ts">
   export let showModal: boolean;
-
   let dialog: HTMLDialogElement;
-
   $: if (dialog) {
     if (showModal) {
       dialog.showModal();
@@ -11,7 +9,6 @@
     }
   }
 </script>
-
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <dialog
@@ -23,7 +20,6 @@
     <slot />
   </div>
 </dialog>
-
 <style>
   dialog {
     border-radius: 12px;

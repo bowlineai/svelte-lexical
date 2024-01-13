@@ -1,9 +1,10 @@
 <script lang="ts">
-  import {
+  import pkgLexical from 'lexical';
+  const {
     CAN_UNDO_COMMAND,
     UNDO_COMMAND,
     COMMAND_PRIORITY_CRITICAL,
-  } from 'lexical';
+  } = pkgLexical;
   import {onMount} from 'svelte';
   import {
     getEditor,
@@ -11,13 +12,10 @@
     getActiveEditor,
   } from '../../core/composerContext';
   import {IS_APPLE} from '../../environment/environment';
-
   const editor = getEditor();
   const activeEditor = getActiveEditor();
   const isEditable = getIsEditable();
-
   let canUndo = false;
-
   // unregisters onDestroy through returned callback
   onMount(() => {
     editor.registerCommand(
@@ -30,7 +28,6 @@
     );
   });
 </script>
-
 <button
   disabled={!canUndo || !$isEditable}
   on:click={() => {

@@ -1,21 +1,20 @@
 <script lang="ts">
-  import {
+  import pkgLexical from 'lexical';
+  const {
     FORMAT_ELEMENT_COMMAND,
     INDENT_CONTENT_COMMAND,
     OUTDENT_CONTENT_COMMAND,
-  } from 'lexical';
+  } = pkgLexical;
   import DropDown from '../generic/dropdown/DropDown.svelte';
   import DropDownItem from '../generic/dropdown/DropDownItem.svelte';
   import Divider from './Divider.svelte';
   import {getActiveEditor, getIsEditable} from '../../core/composerContext';
   import {getContext} from 'svelte';
   import type {Writable} from 'svelte/store';
-
   const activeEditor = getActiveEditor();
   const isRTL: Writable<boolean> = getContext('isRTL');
   const isEditable = getIsEditable();
 </script>
-
 <DropDown
   disabled={!$isEditable}
   buttonLabel="Align"

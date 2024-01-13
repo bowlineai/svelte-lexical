@@ -1,26 +1,26 @@
 <script lang="ts">
   import DropDownItem from '../../generic/dropdown/DropDownItem.svelte';
-  import {
-    $getSelection as getSelection,
-    $isRangeSelection as isRangeSelection,
+  import pkgLexical from 'lexical';
+  const {
+    $getSelection: getSelection,
+    $isRangeSelection: isRangeSelection,
     DEPRECATED_$isGridSelection,
-  } from 'lexical';
-  import {
-    $createHeadingNode as createHeadingNode,
-    type HeadingTagType,
-  } from '@lexical/rich-text';
-  import {$setBlocksType as setBlocksType} from '@lexical/selection';
+  } = pkgLexical;
+  import type {HeadingTagType} from '@lexical/rich-text';
+  import pkgrich from '@lexical/rich-text';
+  const {
+    $createHeadingNode: createHeadingNode,
+  } = pkgrich;
+  import pkgselection from '@lexical/selection';
+  const {$setBlocksType: setBlocksType} = pkgselection;
   import type {Writable} from 'svelte/store';
   import type {blockTypeToBlockName} from './blockTypeToBlockName';
   import {getContext} from 'svelte';
   import {getEditor} from '../../../core/composerContext';
-
   export let headingSize: HeadingTagType;
-
   const blockType: Writable<keyof typeof blockTypeToBlockName> =
     getContext('blockType');
   const editor = getEditor();
-
   const formatHeading = (headingSize: HeadingTagType) => {
     if ($blockType !== headingSize) {
       editor.update(() => {
@@ -35,7 +35,6 @@
     }
   };
 </script>
-
 <DropDownItem
   class={'item ' +
     ($blockType === headingSize ? 'active dropdown-item-active' : '')}

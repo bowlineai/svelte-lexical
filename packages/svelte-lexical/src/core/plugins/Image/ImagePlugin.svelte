@@ -5,40 +5,40 @@
       rangeParent?: Node;
     }
   }
-
-  export const INSERT_IMAGE_COMMAND: LexicalCommand<InsertImagePayload> =
-    createCommand();
+  import pkgLexical2 from 'lexical'
+  const { createCommand } = pkgLexical2
+  export const INSERT_IMAGE_COMMAND: LexicalCommand<InsertImagePayload> = createCommand();
   export type InsertImagePayload = Readonly<ImagePayload>;
-
   const getDOMSelection = (targetWindow: Window | null): Selection | null =>
     CAN_USE_DOM ? (targetWindow || window).getSelection() : null;
 </script>
-
 <script lang="ts">
-  import {
-    $createParagraphNode as createParagraphNode,
-    $createRangeSelection as createRangeSelection,
-    $getSelection as getSelection,
-    $insertNodes as insertNodes,
-    $isNodeSelection as isNodeSelection,
-    $isRootOrShadowRoot as isRootOrShadowRoot,
-    $setSelection as setSelection,
+  import type {
+    LexicalCommand,
+    LexicalEditor,
+  } from 'lexical';
+  import pkgLexical from 'lexical';
+  const {
+    $createParagraphNode: createParagraphNode,
+    $createRangeSelection: createRangeSelection,
+    $getSelection: getSelection,
+    $insertNodes: insertNodes,
+    $isNodeSelection: isNodeSelection,
+    $isRootOrShadowRoot: isRootOrShadowRoot,
+    $setSelection: setSelection,
     COMMAND_PRIORITY_EDITOR,
     COMMAND_PRIORITY_HIGH,
     COMMAND_PRIORITY_LOW,
-    createCommand,
     DRAGOVER_COMMAND,
     DRAGSTART_COMMAND,
     DROP_COMMAND,
     PASTE_COMMAND,
-    type LexicalCommand,
-    type LexicalEditor,
-  } from 'lexical';
-  import {
-    $wrapNodeInElement as wrapNodeInElement,
+  } = pkgLexical;
+  import pkgutils from '@lexical/utils';
+  const {
+    $wrapNodeInElement: wrapNodeInElement,
     mergeRegister,
-  } from '@lexical/utils';
-
+   } = pkgutils;
   import {onMount, createEventDispatcher} from 'svelte';
   import {
     $createImageNode as createImageNode,
@@ -48,22 +48,17 @@
   } from './ImageNode';
   import {getEditor} from '../../composerContext';
   import {CAN_USE_DOM} from '../../../environment/canUseDOM';
-
   const editor: LexicalEditor = getEditor();
   const dispatcher = createEventDispatcher();
-
   const TRANSPARENT_IMAGE =
     'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
   let img: HTMLImageElement;
-
   onMount(() => {
     if (!editor.hasNodes([ImageNode])) {
       throw new Error('ImagesPlugin: ImageNode not registered on editor');
     }
-
     img = document.createElement('img');
     img.src = TRANSPARENT_IMAGE;
-
     return mergeRegister(
       editor.registerCommand<InsertImagePayload>(
         INSERT_IMAGE_COMMAND,
@@ -102,7 +97,6 @@
       ),
     );
   });
-
   function onInsert(payload: ImagePayload): boolean {
     editor.update(() => {
       let imageNode = createImageNode(payload);
@@ -112,10 +106,8 @@
       }
       dispatcher('insert', {src: payload.src, node: imageNode});
     });
-
     return true;
   }
-
   function onPaste(event: ClipboardEvent): boolean {
     const clipboardFiles = event.clipboardData?.files;
     if (
@@ -125,7 +117,6 @@
     ) {
       return false;
     }
-
     const reader = new FileReader();
     reader.onloadend = () => {
       onInsert({
@@ -134,10 +125,8 @@
       });
     };
     reader.readAsDataURL(clipboardFiles[0]);
-
     return true;
   }
-
   function onDragStart(event: DragEvent): boolean {
     const node = getImageNodeInSelection();
     if (!node) {
@@ -165,10 +154,8 @@
         type: 'image',
       }),
     );
-
     return true;
   }
-
   function onDragover(event: DragEvent): boolean {
     const node = getImageNodeInSelection();
     if (!node) {
@@ -179,7 +166,6 @@
     }
     return true;
   }
-
   function onDrop(event: DragEvent, editor: LexicalEditor): boolean {
     const node = getImageNodeInSelection();
     if (!node) {
@@ -202,7 +188,6 @@
     }
     return true;
   }
-
   function getImageNodeInSelection(): ImageNode | null {
     const selection = getSelection();
     if (!isNodeSelection(selection)) {
@@ -212,7 +197,6 @@
     const node = nodes[0];
     return isImageNode(node) ? node : null;
   }
-
   function getDragImageData(event: DragEvent): null | InsertImagePayload {
     const dragData = event.dataTransfer?.getData('application/x-lexical-drag');
     if (!dragData) {
@@ -222,10 +206,8 @@
     if (type !== 'image') {
       return null;
     }
-
     return data;
   }
-
   function canDropImage(event: DragEvent): boolean {
     const target = event.target;
     return !!(
@@ -236,7 +218,6 @@
       target.parentElement.closest('div.ContentEditable__root')
     );
   }
-
   function getDragSelection(event: DragEvent): Range | null | undefined {
     let range;
     const target = event.target as null | Element | Document;
@@ -255,10 +236,8 @@
     } else {
       throw Error(`Cannot get the selection when dragging`);
     }
-
     return range;
   }
 </script>
-
 <!--for ImageComponent history plugin -->
 <slot />

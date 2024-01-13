@@ -1,39 +1,38 @@
 <script lang="ts">
-  import {
+  import pkglink from '@lexical/link';
+  const {
     TOGGLE_LINK_COMMAND,
-    $isAutoLinkNode as isAutoLinkNode,
-    $isLinkNode as isLinkNode,
-  } from '@lexical/link';
-  import {
-    $findMatchingParent as findMatchingParent,
+    $isAutoLinkNode: isAutoLinkNode,
+    $isLinkNode: isLinkNode,
+  } = pkglink;
+  import pkgutils from '@lexical/utils';
+  const {
+     $findMatchingParent: findMatchingParent,
     mergeRegister,
-  } from '@lexical/utils';
-  import {
-    $getSelection as getSelection,
-    $isRangeSelection as isRangeSelection,
+   } = pkgutils;
+  import pkgLexical from 'lexical';
+  const {
+     $getSelection: getSelection,
+     $isRangeSelection: isRangeSelection,
     COMMAND_PRIORITY_CRITICAL,
     SELECTION_CHANGE_COMMAND,
-  } from 'lexical';
+    } = pkgLexical;
   import {writable} from 'svelte/store';
   import {onMount} from 'svelte';
   import getSelectedNode from '../../../components/toolbar/getSelectionInfo';
   import {getEditor} from '../../composerContext';
   import FloatingLinkEditor from './FloatingLinkEditor.svelte';
-
   const editor = getEditor();
   export let anchorElem = document.body;
-
   let activeEditor = editor;
   const isLink = writable(false);
   let isEditMode = writable(false);
-
   function updateToolbar() {
     const selection = getSelection();
     if (isRangeSelection(selection)) {
       const node = getSelectedNode(selection);
       const linkParent = findMatchingParent(node, isLinkNode);
       const autoLinkParent = findMatchingParent(node, isAutoLinkNode);
-
       // We don't want this menu to open for auto links.
       if (linkParent != null && autoLinkParent == null) {
         $isLink = true;
@@ -42,7 +41,6 @@
       }
     }
   }
-
   onMount(() => {
     return mergeRegister(
       editor.registerUpdateListener(({editorState}) => {
@@ -72,5 +70,4 @@
     );
   });
 </script>
-
 <FloatingLinkEditor editor={activeEditor} {isLink} {anchorElem} {isEditMode} />

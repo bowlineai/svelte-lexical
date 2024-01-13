@@ -3,19 +3,19 @@
   import type {Writable} from 'svelte/store';
   import DropDownItem from '../../generic/dropdown/DropDownItem.svelte';
   import type {blockTypeToBlockName} from './blockTypeToBlockName';
-  import {
-    $getSelection as getSelection,
-    $isRangeSelection as isRangeSelection,
-    $createParagraphNode as createParagraphNode,
+  import pkgLexical from 'lexical';
+  const {
+     $getSelection: getSelection,
+     $isRangeSelection: isRangeSelection,
+     $createParagraphNode: createParagraphNode,
     DEPRECATED_$isGridSelection,
-  } from 'lexical';
-  import {$setBlocksType as setBlocksType} from '@lexical/selection';
+     } = pkgLexical;
+  import pkgselection from '@lexical/selection';
+  const {  $setBlocksType: setBlocksType,  } = pkgselection;
   import {getEditor} from '../../../core/composerContext';
-
   const blockType: Writable<keyof typeof blockTypeToBlockName> =
     getContext('blockType');
   const editor = getEditor();
-
   const formatParagraph = () => {
     if ($blockType !== 'paragraph') {
       editor.update(() => {
@@ -29,7 +29,6 @@
     }
   };
 </script>
-
 <DropDownItem
   class={'item ' +
     ($blockType === 'paragraph' ? 'active dropdown-item-active' : '')}

@@ -1,8 +1,9 @@
 <script lang="ts">
-  import {ListItemNode, ListNode} from '@lexical/list';
-  import {HeadingNode, QuoteNode} from '@lexical/rich-text';
+  import pkglist from '@lexical/list';
+  const {ListItemNode, ListNode} = pkglist;
+  import pkgrich from '@lexical/rich-text';
+  const {HeadingNode, QuoteNode} = pkgrich;
   import type {EditorThemeClasses, LexicalEditor} from 'lexical';
-
   import Composer from '../../core/Composer.svelte';
   import ContentEditable from '../../core/ContentEditable.svelte';
   import SharedHistoryPlugin from '../../core/plugins/SharedHistoryPlugin.svelte';
@@ -19,11 +20,8 @@
   import PlaceHolder from '../../core/plugins/PlaceHolder.svelte';
   import AutoFocusPlugin from '../../core/plugins/AutoFocusPlugin.svelte';
   import CaptionEditorHistoryPlugin from '../../core/plugins/Image/CaptionEditorHistoryPlugin.svelte';
-
   export let theme: EditorThemeClasses;
-
   let composer: SvelteComponent;
-
   const initialConfig = {
     namespace: 'Playground',
     theme,
@@ -39,12 +37,10 @@
       throw error;
     },
   };
-
   export function getEditor(): LexicalEditor {
     return composer.getEditor();
   }
 </script>
-
 <Composer {initialConfig} bind:this={composer}>
   <div class="editor-shell">
     <ToolbarRichText />
@@ -64,7 +60,6 @@
       <ImagePlugin>
         <CaptionEditorHistoryPlugin />
       </ImagePlugin>
-
       <ActionBar />
     </div>
   </div>

@@ -1,19 +1,18 @@
 <script lang="ts">
   import {getEditor} from '../../../../composerContext';
-
-  import {$isCodeNode as isCodeNode} from '@lexical/code';
-  import {$getNearestNodeFromDOMNode as getNearestNodeFromDOMNode} from 'lexical';
+  import pkgcode from '@lexical/code';
+  const {  $isCodeNode: isCodeNode,  } = pkgcode;
+  import pkgLexical from 'lexical';
+  const {  $getNearestNodeFromDOMNode: getNearestNodeFromDOMNode,  } = pkgLexical;
   import type {Options} from 'prettier';
   import {
     loadPrettierFormat,
     loadPrettierParserByLang,
     PRETTIER_OPTIONS_BY_LANG,
   } from './PrettierLangOptions';
-
   export let lang: string;
   const editor = getEditor();
   export let getCodeDOMNode: () => HTMLElement | null;
-
   function getPrettierOptions(lang: string): Options {
     const options = PRETTIER_OPTIONS_BY_LANG[lang];
     if (!options) {
@@ -21,38 +20,29 @@
         `CodeActionMenuPlugin: Prettier does not support this language: ${lang}`,
       );
     }
-
     return options;
   }
-
   let syntaxError = '';
   let tipsVisible = false;
-
   async function handleClick(): Promise<void> {
     const codeDOMNode = getCodeDOMNode();
-
     try {
       const format = await loadPrettierFormat();
       const options = getPrettierOptions(lang);
       options.plugins = [await loadPrettierParserByLang(lang)];
-
       if (!codeDOMNode) {
         return;
       }
-
       editor.update(() => {
         const codeNode = getNearestNodeFromDOMNode(codeDOMNode);
-
         if (isCodeNode(codeNode)) {
           const content = codeNode.getTextContent();
-
           let parsed = '';
           try {
             parsed = format(content, options);
           } catch (error: unknown) {
             setError(error);
           }
-
           if (parsed !== '') {
             const selection = codeNode.select(0);
             selection.insertText(parsed);
@@ -65,7 +55,6 @@
       setError(error);
     }
   }
-
   function setError(error: unknown) {
     if (error instanceof Error) {
       syntaxError = error.message;
@@ -75,20 +64,17 @@
       console.error('Unexpected error: ', error);
     }
   }
-
   function handleMouseEnter() {
     if (syntaxError !== '') {
       tipsVisible = true;
     }
   }
-
   function handleMouseLeave() {
     if (syntaxError !== '') {
       tipsVisible = false;
     }
   }
 </script>
-
 <div class="prettier-wrapper">
   <button
     class="menu-item"
@@ -106,12 +92,10 @@
     <pre class="code-error-tips">{syntaxError}</pre>
   {/if}
 </div>
-
 <style>
   :global(.code-action-menu-container .prettier-wrapper) {
     position: relative;
   }
-
   :global(.code-action-menu-container .prettier-wrapper .code-error-tips) {
     padding: 5px;
     border-radius: 4px;

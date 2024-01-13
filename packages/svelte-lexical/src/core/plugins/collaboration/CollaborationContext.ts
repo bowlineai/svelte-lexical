@@ -5,9 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-
 import type {Doc} from 'yjs';
-
 type CollaborationContextType = {
   clientID: number;
   color: string;
@@ -15,7 +13,6 @@ type CollaborationContextType = {
   name: string;
   yjsDocMap: Map<string, Doc>;
 };
-
 const entries = [
   ['Cat', 'rgb(125, 50, 0)'],
   ['Dog', 'rgb(100, 0, 0)'],
@@ -34,7 +31,6 @@ const entries = [
   ['Gull', 'rgb(100, 0, 100)'],
   ['Squid', 'rgb(150, 0, 150)'],
 ];
-
 const randomEntry = entries[Math.floor(Math.random() * entries.length)];
 const CollaborationContext: CollaborationContextType = {
   clientID: 0,
@@ -43,21 +39,17 @@ const CollaborationContext: CollaborationContextType = {
   name: randomEntry[0],
   yjsDocMap: new Map(),
 };
-
 export function useCollaborationContext(
   username?: string,
   color?: string,
 ): CollaborationContextType {
   // TODO: should be stored in the svelte component context to avoid conflict with mutliple instances of the editor
   const collabContext = CollaborationContext;
-
   if (username != null) {
     collabContext.name = username;
   }
-
   if (color != null) {
     collabContext.color = color;
   }
-
   return collabContext;
 }

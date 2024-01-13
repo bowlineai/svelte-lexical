@@ -3,7 +3,6 @@
   import type {LexicalEditor} from 'lexical';
   import {onMount} from 'svelte';
   import {getEditor} from './composerContext';
-
   export let ariaActiveDescendantID: string | undefined = undefined;
   export let ariaAutoComplete: 'list' | 'none' | 'inline' | 'both' | null =
     null;
@@ -25,11 +24,9 @@
   export let style: string | undefined = undefined;
   export let tabIndex: number | undefined = undefined;
   export let testid: string | undefined = undefined;
-
   let isEditable = false;
   const editor: LexicalEditor = getEditor();
   let ref: null | HTMLElement;
-
   onMount(() => {
     editor.setRootElement(ref);
     isEditable = editor.isEditable();
@@ -38,7 +35,6 @@
     });
   });
 </script>
-
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <div
   aria-activedescendant={!isEditable ? undefined : ariaActiveDescendantID}

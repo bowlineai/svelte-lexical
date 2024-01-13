@@ -1,37 +1,33 @@
 <script lang="ts">
-  import {
-    $isCodeNode as isCodeNode,
+  import pkgcode from '@lexical/code';
+  const {
+    $isCodeNode: isCodeNode,
     CODE_LANGUAGE_FRIENDLY_NAME_MAP,
     getLanguageFriendlyName,
-  } from '@lexical/code';
-  import {$getNodeByKey as getNodeByKey, type NodeKey} from 'lexical';
+  } = pkgcode;
+  import type {NodeKey} from 'lexical';
+  import pkgLexical from 'lexical';
+  const {$getNodeByKey: getNodeByKey} = pkgLexical;
   import {getContext} from 'svelte';
   import type {Writable} from 'svelte/store';
   import {getActiveEditor, getIsEditable} from '../../core/composerContext';
   import DropDown from '../generic/dropdown/DropDown.svelte';
   import DropDownItem from '../generic/dropdown/DropDownItem.svelte';
-
   const activeEditor = getActiveEditor();
   const isEditable = getIsEditable();
-
   const selectedElementKey: Writable<NodeKey | null> =
     getContext('selectedElementKey');
   const codeLanguage: Writable<string> = getContext('codeLanguage');
-
   const CODE_LANGUAGE_OPTIONS = getCodeLanguageOptions();
-
   function getCodeLanguageOptions(): [string, string][] {
     const options: [string, string][] = [];
-
     for (const [lang, friendlyName] of Object.entries(
       CODE_LANGUAGE_FRIENDLY_NAME_MAP,
     )) {
       options.push([lang, friendlyName]);
     }
-
     return options;
   }
-
   function onCodeLanguageSelect(value: string) {
     $activeEditor.update(() => {
       if ($selectedElementKey !== null) {
@@ -43,7 +39,6 @@
     });
   }
 </script>
-
 <DropDown
   disabled={!$isEditable}
   buttonClassName="toolbar-item code-language"

@@ -1,20 +1,20 @@
 <script lang="ts">
-  import {LinkNode, TOGGLE_LINK_COMMAND, toggleLink} from '@lexical/link';
-  import {mergeRegister} from '@lexical/utils';
-  import {
-    $getSelection as getSelection,
-    $isElementNode as isElementNode,
-    $isRangeSelection as isRangeSelection,
+  import pkglink from '@lexical/link';
+  const {LinkNode, TOGGLE_LINK_COMMAND, toggleLink} = pkglink;
+  import pkgutils from '@lexical/utils';
+  const {mergeRegister} = pkgutils;
+  import pkgLexical from 'lexical';
+  const {
+     $getSelection: getSelection,
+     $isElementNode: isElementNode,
+     $isRangeSelection: isRangeSelection,
     COMMAND_PRIORITY_LOW,
     PASTE_COMMAND,
-  } from 'lexical';
+     } = pkgLexical;
   import {onMount} from 'svelte';
   import {getEditor} from '../../composerContext';
-
   export let validateUrl: undefined | ((url: string) => boolean) = undefined;
-
   const editor = getEditor();
-
   onMount(() => {
     if (!editor.hasNodes([LinkNode])) {
       throw new Error('LinkPlugin: LinkNode not registered on editor');

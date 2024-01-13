@@ -1,15 +1,13 @@
 import type {LexicalEditor, EditorState} from 'lexical';
-import {$createParagraphNode, $getRoot, $getSelection} from 'lexical';
+import pkgLexical from 'lexical';
+const {$createParagraphNode, $getRoot, $getSelection} = pkgLexical;
 import {CAN_USE_DOM} from '../environment/canUseDOM';
-
 const HISTORY_MERGE_OPTIONS = {tag: 'history-merge'};
-
 export type InitialEditorStateType =
   | null
   | string
   | EditorState
   | ((editor: LexicalEditor) => void);
-
 export function initializeEditor(
   editor: LexicalEditor,
   initialEditorState?: InitialEditorStateType,

@@ -22,10 +22,8 @@
   import InsertImageDialog from '../toolbar/dialogs/InsertImageDialog.svelte';
   import InsertHRDropDownItem from '../toolbar/InsertDropDown/InsertHRDropDownItem.svelte';
   import InsertImageDropDownItem from '../toolbar/InsertDropDown/InsertImageDropDownItem.svelte';
-
   let imageDialog: InsertImageDialog;
 </script>
-
 <Toolbar let:editor let:activeEditor let:blockType>
   <UndoButton />
   <RedoButton />

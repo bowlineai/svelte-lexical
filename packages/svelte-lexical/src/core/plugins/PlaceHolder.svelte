@@ -1,15 +1,14 @@
 <script lang="ts">
   import type {LexicalEditor} from 'lexical';
-  import {$canShowPlaceholderCurry as canShowPlaceholderCurry} from '@lexical/text';
+  import pkgtext from '@lexical/text';
+  const {  $canShowPlaceholderCurry: canShowPlaceholderCurry,  } = pkgtext;
   import {getEditor} from '../composerContext';
   import {onMount} from 'svelte';
-  import {mergeRegister} from '@lexical/utils';
-
+  import pkgutils from '@lexical/utils';
+  const {mergeRegister} = pkgutils;
   export let className = 'Placeholder__root';
-
   const editor = getEditor();
   let canShowPlaceHolder = true;
-
   onMount(() => {
     return mergeRegister(
       editor.registerUpdateListener(() => {
@@ -20,24 +19,20 @@
       }),
     );
   });
-
   function canShowPlaceholderFromCurrentEditorState(
     editor: LexicalEditor,
   ): boolean {
     const currentCanShowPlaceholder = editor
       .getEditorState()
       .read(canShowPlaceholderCurry(editor.isComposing()));
-
     return currentCanShowPlaceholder;
   }
 </script>
-
 {#if canShowPlaceHolder}
   <div class={className}>
     <slot />
   </div>
 {/if}
-
 <style>
   .Placeholder__root {
     font-size: 15px;

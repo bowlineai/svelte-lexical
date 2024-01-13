@@ -3,15 +3,12 @@
   import {getActiveEditor} from '../../../core/composerContext';
   import {INSERT_IMAGE_COMMAND} from '../../../core/plugins/Image/ImagePlugin.svelte';
   import TextInput from '../../generic/input/TextInput.svelte';
-
   const activeEditor = getActiveEditor();
   const dispatch = createEventDispatcher();
-
   let src = '';
   let altText = '';
   $: isDisabled = src === '';
 </script>
-
 <div class="modal">
   <h2 class="Modal__title">Insert Image</h2>
   <div class="Modal__content">
@@ -41,7 +38,6 @@
     </div>
   </div>
 </div>
-
 <style>
   .modal {
     width: 30em;

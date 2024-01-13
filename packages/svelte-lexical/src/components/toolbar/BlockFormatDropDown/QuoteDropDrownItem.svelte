@@ -4,18 +4,19 @@
   import {getEditor} from '../../../core/composerContext';
   import DropDownItem from '../../generic/dropdown/DropDownItem.svelte';
   import type {blockTypeToBlockName} from './blockTypeToBlockName';
-  import {$setBlocksType as setBlocksType} from '@lexical/selection';
-  import {
-    $getSelection as getSelection,
-    $isRangeSelection as isRangeSelection,
+  import pkgselection from '@lexical/selection';
+  const {  $setBlocksType: setBlocksType,  } = pkgselection;
+  import pkgLexical from 'lexical';
+  const {
+     $getSelection: getSelection,
+     $isRangeSelection: isRangeSelection,
     DEPRECATED_$isGridSelection,
-  } from 'lexical';
-  import {$createQuoteNode as createQuoteNode} from '@lexical/rich-text';
-
+    } = pkgLexical;
+  import pkgrich from '@lexical/rich-text';
+  const {  $createQuoteNode: createQuoteNode,  } = pkgrich;
   const blockType: Writable<keyof typeof blockTypeToBlockName> =
     getContext('blockType');
   const editor = getEditor();
-
   const formatQuote = () => {
     if ($blockType !== 'quote') {
       editor.update(() => {
@@ -30,7 +31,6 @@
     }
   };
 </script>
-
 <DropDownItem
   class={'item ' +
     ($blockType === 'quote' ? 'active dropdown-item-active' : '')}

@@ -1,17 +1,19 @@
 <script context="module" lang="ts">
   const imageCache = new Set();
 </script>
-
 <script lang="ts">
   import './ImageNodeStyles.css';
-  import {
-    $getSelection as getSelection,
-    $isNodeSelection as isNodeSelection,
-    type GridSelection,
-    type LexicalEditor,
-    type NodeSelection,
-    type RangeSelection,
-    $getNodeByKey as getNodeByKey,
+  import type {
+    GridSelection,
+    LexicalEditor,
+    NodeSelection,
+    RangeSelection,
+  } from 'lexical'
+  import pkgLexical from 'lexical';
+  const {
+    $getSelection: getSelection,
+    $isNodeSelection: isNodeSelection,
+    $getNodeByKey: getNodeByKey,
     SELECTION_CHANGE_COMMAND,
     COMMAND_PRIORITY_LOW,
     CLICK_COMMAND,
@@ -20,9 +22,10 @@
     KEY_BACKSPACE_COMMAND,
     KEY_ESCAPE_COMMAND,
     KEY_ENTER_COMMAND,
-  } from 'lexical';
+  } = pkgLexical;
   import {onMount} from 'svelte';
-  import {mergeRegister} from '@lexical/utils';
+  import pkgutils from '@lexical/utils';
+  const {mergeRegister} = pkgutils;
   import ImageResizer from '../../../components/ImageResizer.svelte';
   import {$isImageNode as isImageNode} from './ImageNode';
   import {
@@ -35,7 +38,6 @@
   import PlaceHolder from '../PlaceHolder.svelte';
   import AutoFocusPlugin from '../AutoFocusPlugin.svelte';
   import {getImageHistoryPluginType} from '../../composerContext';
-
   export let src: string;
   export let altText: string;
   export let nodeKey: string;
@@ -47,21 +49,16 @@
   export let caption: LexicalEditor;
   export let captionsEnabled: boolean;
   export let editor: LexicalEditor;
-
   $: heightCss = height === 'inherit' ? 'inherit' : height + 'px';
   $: widthCss = width === 'inherit' ? 'inherit' : width + 'px';
-
   let selection: RangeSelection | NodeSelection | GridSelection | null = null;
-
   let imageRef: HTMLImageElement | null;
   let buttonRef: HTMLButtonElement | null;
   let isSelected = createNodeSelectionStore(editor, nodeKey);
   let isResizing = false;
   let activeEditorRef: LexicalEditor;
-
   $: draggable = $isSelected && isNodeSelection(selection) && !isResizing;
   $: isFocused = $isSelected || isResizing;
-
   let promise = new Promise((resolve) => {
     if (imageCache.has(src)) {
       resolve(null);
@@ -74,7 +71,6 @@
       };
     }
   });
-
   const onDelete = (payload: KeyboardEvent) => {
     if ($isSelected && isNodeSelection(getSelection())) {
       const event: KeyboardEvent = payload;
@@ -87,7 +83,6 @@
     }
     return false;
   };
-
   const onEnter = (event: KeyboardEvent) => {
     const latestSelection = getSelection();
     const buttonElem = buttonRef;
@@ -110,7 +105,6 @@
     }
     return false;
   };
-
   const onEscape = (event: KeyboardEvent) => {
     if (activeEditorRef === caption || buttonRef === event.target) {
       selection = null;
@@ -125,7 +119,6 @@
     }
     return false;
   };
-
   onMount(() => {
     return mergeRegister(
       editor.registerUpdateListener(({editorState}) => {
@@ -143,7 +136,6 @@
         CLICK_COMMAND,
         (payload) => {
           const event = payload;
-
           if (isResizing) {
             return true;
           }
@@ -156,7 +148,6 @@
             }
             return true;
           }
-
           return false;
         },
         COMMAND_PRIORITY_LOW,
@@ -192,7 +183,6 @@
       ),
     );
   });
-
   const setShowCaption = () => {
     editor.update(() => {
       const node = getNodeByKey(nodeKey);
@@ -201,7 +191,6 @@
       }
     });
   };
-
   const onResizeEnd = (
     nextWidth: 'inherit' | number,
     nextHeight: 'inherit' | number,
@@ -210,7 +199,6 @@
     setTimeout(() => {
       isResizing = false;
     }, 200);
-
     editor.update(() => {
       const node = getNodeByKey(nodeKey);
       if (isImageNode(node)) {
@@ -218,14 +206,11 @@
       }
     });
   };
-
   const onResizeStart = () => {
     isResizing = true;
   };
-
   const historyPlugin = getImageHistoryPluginType();
 </script>
-
 <div {draggable}>
   {#await promise}
     <p>...loading image</p>
@@ -244,7 +229,6 @@
   <div class="image-caption-container">
     <NestedComposer initialEditor={caption} parentEditor={editor}>
       <AutoFocusPlugin />
-
       <!-- {#if isCollabActive}
         <CollaborationPlugin
           id={caption.getKey()}
@@ -256,7 +240,6 @@
       <svelte:component
         this={historyPlugin.componentType}
         {...historyPlugin.props} />
-
       <RichTextPlugin />
       <ContentEditable className="ImageNode__contentEditable" />
       <PlaceHolder className="ImageNode__placeholder">

@@ -1,17 +1,17 @@
 <script lang="ts">
-  import {mergeRegister} from '@lexical/utils';
-  import {DecoratorNode, type LexicalEditor} from 'lexical';
+  import pkgutils from '@lexical/utils';
+  const {mergeRegister} = pkgutils;
+  import type {LexicalEditor} from 'lexical';
+  import pkgLexical from 'lexical';
+  const {DecoratorNode} = pkgLexical;
   import {getAllContexts, onMount, SvelteComponent} from 'svelte';
   import {getEditor} from './composerContext';
-
   const contexts = getAllContexts();
-
   const editor: LexicalEditor = getEditor();
   // cache for svelte components
   const components: Record<string, SvelteComponent> = {};
   // cache for dirty components identified by mutation listener (cache is cleared after decorator listener renders them)
   const dirtyComponents: Array<string> = [];
-
   onMount(() => {
     // register Mutation Listener for all Decorator Node types (except where skipDecorateRender = true)
     // 1- capture dirty nodes (`dirtyComponents`)
@@ -37,7 +37,6 @@
         unregisterCallBacks.push(unreg);
       }
     });
-
     return mergeRegister(
       ...unregisterCallBacks,
       // register Decorator listener to render nodes

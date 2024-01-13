@@ -1,43 +1,34 @@
 <script lang="ts">
-  import {$isCodeNode as isCodeNode} from '@lexical/code';
-  import {
-    $getNearestNodeFromDOMNode as getNearestNodeFromDOMNode,
-    $getSelection as getSelection,
-    $setSelection as setSelection,
-  } from 'lexical';
+  import pkgcode from '@lexical/code';
+  const {  $isCodeNode: isCodeNode,  } = pkgcode;
+  import pkgLexical from 'lexical';
+  const {
+     $getNearestNodeFromDOMNode: getNearestNodeFromDOMNode,
+     $getSelection: getSelection,
+     $setSelection: setSelection,
+     } = pkgLexical;
   import {getEditor} from '../../../../composerContext';
-
   import {useDebounce} from '../utils';
-
   const editor = getEditor();
   export let getCodeDOMNode: () => HTMLElement | null;
-
   let isCopyCompleted = false;
-
   const removeSuccessIcon = useDebounce(() => {
     isCopyCompleted = false;
   }, 1000);
-
   async function handleClick(): Promise<void> {
     const codeDOMNode = getCodeDOMNode();
-
     if (!codeDOMNode) {
       return;
     }
-
     let content = '';
-
     editor.update(() => {
       const codeNode = getNearestNodeFromDOMNode(codeDOMNode);
-
       if (isCodeNode(codeNode)) {
         content = codeNode.getTextContent();
       }
-
       const selection = getSelection();
       setSelection(selection);
     });
-
     try {
       await navigator.clipboard.writeText(content);
       isCopyCompleted = true;
@@ -48,7 +39,6 @@
     }
   }
 </script>
-
 <button class="menu-item" on:click={handleClick} aria-label="copy">
   {#if isCopyCompleted}
     <i class="format success" />

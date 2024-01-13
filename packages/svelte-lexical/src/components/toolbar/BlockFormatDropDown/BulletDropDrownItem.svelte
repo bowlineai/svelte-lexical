@@ -1,18 +1,17 @@
 <script lang="ts">
-  import {
+  import pkglist from '@lexical/list';
+  const {
     INSERT_UNORDERED_LIST_COMMAND,
     REMOVE_LIST_COMMAND,
-  } from '@lexical/list';
+  } = pkglist;
   import {getContext} from 'svelte';
   import type {Writable} from 'svelte/store';
   import {getEditor} from '../../../core/composerContext';
   import DropDownItem from '../../generic/dropdown/DropDownItem.svelte';
   import type {blockTypeToBlockName} from './blockTypeToBlockName';
-
   const blockType: Writable<keyof typeof blockTypeToBlockName> =
     getContext('blockType');
   const editor = getEditor();
-
   const formatBulletList = () => {
     if ($blockType !== 'bullet') {
       editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
@@ -21,7 +20,6 @@
     }
   };
 </script>
-
 <DropDownItem
   class={'item ' +
     ($blockType === 'bullet' ? 'active dropdown-item-active' : '')}

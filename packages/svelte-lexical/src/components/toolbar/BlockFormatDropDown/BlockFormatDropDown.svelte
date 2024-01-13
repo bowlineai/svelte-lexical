@@ -4,12 +4,10 @@
   import type {Writable} from 'svelte/store';
   import DropDown from '../../generic/dropdown/DropDown.svelte';
   import {blockTypeToBlockName} from './blockTypeToBlockName';
-
   const blockType: Writable<keyof typeof blockTypeToBlockName> =
     getContext('blockType');
   const isEditable = getIsEditable();
 </script>
-
 <DropDown
   disabled={!$isEditable}
   buttonClassName="toolbar-item block-controls"

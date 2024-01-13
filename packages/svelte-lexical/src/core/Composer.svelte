@@ -4,7 +4,6 @@
     | string
     | EditorState
     | ((editor: LexicalEditor) => void);
-
   export type InitialConfigType = Readonly<{
     editor__DEPRECATED?: LexicalEditor | null;
     namespace: string;
@@ -24,17 +23,20 @@
     editorState?: InitialEditorStateType;
   }>;
 </script>
-
 <script lang="ts">
-  import {createEmptyHistoryState} from '@lexical/history';
-  import {
-    createEditor,
-    type EditorState,
-    type EditorThemeClasses,
-    type Klass,
-    type LexicalEditor,
-    type LexicalNode,
+  import pkghistory from '@lexical/history';
+  const {createEmptyHistoryState} = pkghistory;
+  import type {
+    EditorState,
+    EditorThemeClasses,
+    Klass,
+    LexicalEditor,
+    LexicalNode,
   } from 'lexical';
+  import pkgLexical from 'lexical';
+  const {
+    createEditor,
+  } = pkgLexical;
   import {onMount} from 'svelte';
   import {initializeEditor} from './initializeEditor';
   import {
@@ -42,9 +44,7 @@
     setEditor,
     setHistoryStateContext,
   } from './composerContext';
-
   export let initialConfig: InitialConfigType;
-
   const {
     theme,
     namespace,
@@ -53,7 +53,6 @@
     editorState: initialEditorState,
     editable,
   } = initialConfig;
-
   const editor = createEditor({
     editable,
     namespace,
@@ -63,20 +62,15 @@
   });
   initializeEditor(editor, initialEditorState);
   setEditor(editor);
-
   setHistoryStateContext(createEmptyHistoryState());
-
   // allows sharing context between plugins and decorator nodes
   createSharedEditorContext();
-
   onMount(() => {
     const isEditable = initialConfig.editable;
     editor.setEditable(isEditable !== undefined ? isEditable : true);
   });
-
   export function getEditor() {
     return editor;
   }
 </script>
-
 <slot />

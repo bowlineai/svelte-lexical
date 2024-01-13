@@ -1,15 +1,13 @@
 <script lang="ts">
-  import {FORMAT_TEXT_COMMAND} from 'lexical';
+  import pkgLexical from 'lexical';
+  const {FORMAT_TEXT_COMMAND} = pkgLexical;
   import {getContext} from 'svelte';
   import type {Writable} from 'svelte/store';
   import {getActiveEditor, getIsEditable} from '../../core/composerContext';
-
   const activeEditor = getActiveEditor();
   const isEditable = getIsEditable();
-
   const isStrikethrough: Writable<boolean> = getContext('isStrikethrough');
 </script>
-
 <button
   disabled={!isEditable}
   on:click={() => {

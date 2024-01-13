@@ -5,16 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-
 import type {
   EditorConfig,
   LexicalNode,
   SerializedTextNode,
   Spread,
 } from 'lexical';
-
-import {TextNode} from 'lexical';
-
+import pkgLexical from 'lexical';
+const {TextNode} = pkgLexical;
 export type SerializedHashtagNode = Spread<
   {
     type: 'hashtag';
@@ -22,16 +20,13 @@ export type SerializedHashtagNode = Spread<
   },
   SerializedTextNode
 >;
-
 export class HashtagNode extends TextNode {
   static getType(): string {
     return 'hashtag';
   }
-
   static clone(node: HashtagNode): HashtagNode {
     return new HashtagNode(node.__text, node.__key);
   }
-
   static importJSON(serializedNode: SerializedHashtagNode): HashtagNode {
     const node = $createHashtagNode(serializedNode.text);
     node.setFormat(serializedNode.format);
@@ -40,7 +35,6 @@ export class HashtagNode extends TextNode {
     node.setStyle(serializedNode.style);
     return node;
   }
-
   exportJSON(): SerializedHashtagNode {
     return {
       ...super.exportJSON(),
@@ -48,30 +42,24 @@ export class HashtagNode extends TextNode {
       version: 1,
     };
   }
-
   createDOM(config: EditorConfig): HTMLElement {
     const dom = super.createDOM(config);
     dom.classList.add(config.theme.hashtag!);
     return dom;
   }
-
   canInsertTextBefore(): boolean {
     return false;
   }
-
   canInsertTextAfter(): boolean {
     return true;
   }
-
   isTextEntity(): true {
     return true;
   }
 }
-
 export function $createHashtagNode(hashtag: string): HashtagNode {
   return new HashtagNode(hashtag);
 }
-
 export function $isHashtagNode(
   node: LexicalNode | null | undefined | undefined,
 ): boolean {

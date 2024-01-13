@@ -1,29 +1,32 @@
 <script lang="ts">
   import './FloatingLinkEditor.css';
-  import {$isLinkNode as isLinkNode, TOGGLE_LINK_COMMAND} from '@lexical/link';
-  import {mergeRegister} from '@lexical/utils';
-  import {
-    $getSelection as getSelection,
-    $isRangeSelection as isRangeSelection,
+  import pkglink from '@lexical/link';
+  const {$isLinkNode: isLinkNode, TOGGLE_LINK_COMMAND} = pkglink;
+  import pkgutils from '@lexical/utils';
+  const {mergeRegister} = pkgutils;
+  import type {
+    GridSelection,
+    LexicalEditor,
+    NodeSelection,
+    RangeSelection,
+  } from 'lexical'
+  import pkgLexical from 'lexical';
+  const {
+    $getSelection: getSelection,
+    $isRangeSelection: isRangeSelection,
     COMMAND_PRIORITY_HIGH,
     COMMAND_PRIORITY_LOW,
     KEY_ESCAPE_COMMAND,
     SELECTION_CHANGE_COMMAND,
-    type GridSelection,
-    type LexicalEditor,
-    type NodeSelection,
-    type RangeSelection,
-  } from 'lexical';
+  } = pkgLexical;
   import {onMount} from 'svelte';
   import type {Writable} from 'svelte/store';
   import getSelectedNode from '../../../components/toolbar/getSelectionInfo';
   import {setFloatingElemPositionForLinkEditor} from './setFloatingElemPositionForLinkEditor';
   import {sanitizeUrl} from './url';
-
   export let editor: LexicalEditor;
   export let isLink: Writable<boolean>;
   export let anchorElem: HTMLElement;
-
   let editorRef: HTMLDivElement | null;
   let inputRef: HTMLInputElement;
   let linkUrl = '';
@@ -31,45 +34,35 @@
   export let isEditMode: Writable<boolean>;
   let lastSelection: RangeSelection | GridSelection | NodeSelection | null =
     null;
-
   $: if ($isEditMode && inputRef) {
     inputRef.focus();
   }
-
   $: if (anchorElem && editorRef) {
     anchorElem.appendChild(editorRef as Node);
   }
-
   onMount(() => {
     const scrollerElem = anchorElem.parentElement;
-
     const update = () => {
       editor.getEditorState().read(() => {
         updateLinkEditor();
       });
     };
-
     window.addEventListener('resize', update);
-
     if (scrollerElem) {
       scrollerElem.addEventListener('scroll', update);
     }
-
     return mergeRegister(
       () => {
         window.removeEventListener('resize', update);
-
         if (scrollerElem) {
           scrollerElem.removeEventListener('scroll', update);
         }
       },
-
       editor.registerUpdateListener(({editorState}) => {
         editorState.read(() => {
           updateLinkEditor();
         });
       }),
-
       editor.registerCommand(
         SELECTION_CHANGE_COMMAND,
         () => {
@@ -78,7 +71,6 @@
         },
         COMMAND_PRIORITY_LOW,
       ),
-
       editor.registerCommand(
         KEY_ESCAPE_COMMAND,
         () => {
@@ -92,7 +84,6 @@
       ),
     );
   });
-
   function updateLinkEditor() {
     const selection = getSelection();
     if (isRangeSelection(selection)) {
@@ -112,13 +103,10 @@
     const editorElem = editorRef;
     const nativeSelection = window.getSelection();
     const activeElement = document.activeElement;
-
     if (editorElem === null) {
       return;
     }
-
     const rootElement = editor.getRootElement();
-
     if (
       selection !== null &&
       nativeSelection !== null &&
@@ -141,10 +129,8 @@
       $isEditMode = false;
       linkUrl = '';
     }
-
     return true;
   }
-
   function monitorInputInteraction(
     event: KeyboardEvent & {currentTarget: EventTarget & HTMLInputElement},
   ) {
@@ -156,7 +142,6 @@
       $isEditMode = false;
     }
   }
-
   function handleLinkSubmission() {
     if (lastSelection !== null) {
       if (linkUrl !== '') {
@@ -166,9 +151,7 @@
     }
   }
 </script>
-
 <!-- svelte-ignore a11y-interactive-supports-focus -->
-
 <div bind:this={editorRef} class="link-editor">
   {#if $isLink}
     {#if $isEditMode}

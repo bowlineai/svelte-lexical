@@ -13,7 +13,6 @@
   transition: opacity 0.5s;
   will-change: transform;
 }
-
 .link-editor .button {
   width: 20px;
   height: 20px;
@@ -23,14 +22,12 @@
   cursor: pointer;
   margin: 0 2px;
 }
-
 .link-editor .button.hovered {
   width: 20px;
   height: 20px;
   display: inline-block;
   background-color: #eee;
 }
-
 .link-editor .button i,
 .actions i {
   background-size: contain;

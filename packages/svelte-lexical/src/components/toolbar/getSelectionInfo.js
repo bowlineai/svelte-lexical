@@ -1,7 +1,7 @@
-import {
-  $isAtNodeEnd as isAtNodeEnd,
-} from '@lexical/selection';
-
+import pkgselection from '@lexical/selection';
+const {
+   $isAtNodeEnd: isAtNodeEnd,
+ } = pkgselection;
 export default function getSelectedNode(selection) {
   const anchor = selection.anchor;
   const focus = selection.focus;

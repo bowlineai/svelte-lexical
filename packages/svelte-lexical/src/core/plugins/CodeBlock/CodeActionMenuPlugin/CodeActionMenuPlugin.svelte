@@ -1,31 +1,28 @@
 <script lang="ts">
-  import {
-    $isCodeNode as isCodeNode,
-    CodeNode,
+  import type {CodeNode} from '@lexical/code';
+  import pkgcode from '@lexical/code';
+  const {
+    $isCodeNode: isCodeNode,
+    CodeNode: CodeNodeClass,
     getLanguageFriendlyName,
     normalizeCodeLang,
-  } from '@lexical/code';
-  import {$getNearestNodeFromDOMNode as getNearestNodeFromDOMNode} from 'lexical';
+  } = pkgcode;
+  import pkgLexical from 'lexical';
+  const {$getNearestNodeFromDOMNode: getNearestNodeFromDOMNode} = pkgLexical;
   import {onMount} from 'svelte';
   import {getEditor} from '../../../composerContext';
   import CopyButton from './components/CopyButton.svelte';
-
   import PrettierButton from './components/PrettierButton.svelte';
   import {canBePrettier} from './components/PrettierLangOptions';
   import {useDebounce} from './utils';
-
   const CODE_PADDING = 8;
-
   interface Position {
     top: string;
     right: string;
   }
-
   // this component is supposed to be appended to `anchorElem` as per lexical but positioning works without it
   export let anchorElem: HTMLElement = document.body;
-
   const editor = getEditor();
-
   let lang = '';
   let isShown = false;
   let shouldListenMouseMove = false;
@@ -35,11 +32,9 @@
   };
   const codeSetRef: Set<string> = new Set();
   let codeDOMNodeRef: HTMLElement | null = null;
-
   function getCodeDOMNode(): HTMLElement | null {
     return codeDOMNodeRef;
   }
-
   const debouncedOnMouseMove = useDebounce(
     (event: MouseEvent) => {
       const {codeDOMNode, isOutside} = getMouseInfo(event);
@@ -47,25 +42,19 @@
         isShown = false;
         return;
       }
-
       if (!codeDOMNode) {
         return;
       }
-
       codeDOMNodeRef = codeDOMNode;
-
       let codeNode: CodeNode | null = null;
       let _lang = '';
-
       editor.update(() => {
         const maybeCodeNode = getNearestNodeFromDOMNode(codeDOMNode);
-
         if (isCodeNode(maybeCodeNode)) {
           codeNode = maybeCodeNode;
           _lang = codeNode.getLanguage() || '';
         }
       });
-
       if (codeNode) {
         const {y: editorElemY, right: editorElemRight} =
           anchorElem.getBoundingClientRect();
@@ -81,9 +70,8 @@
     50,
     1000,
   );
-
   onMount(() => {
-    return editor.registerMutationListener(CodeNode, (mutations) => {
+    return editor.registerMutationListener(CodeNodeClass, (mutations) => {
       editor.getEditorState().read(() => {
         for (const [key, type] of mutations) {
           switch (type) {
@@ -91,12 +79,10 @@
               codeSetRef.add(key);
               shouldListenMouseMove = codeSetRef.size > 0;
               break;
-
             case 'destroyed':
               codeSetRef.delete(key);
               shouldListenMouseMove = codeSetRef.size > 0;
               break;
-
             default:
               break;
           }
@@ -104,7 +90,6 @@
       });
     });
   });
-
   $: if (shouldListenMouseMove) {
     document.addEventListener('mousemove', debouncedOnMouseMove);
   } else {
@@ -112,16 +97,13 @@
     debouncedOnMouseMove.cancel();
     document.removeEventListener('mousemove', debouncedOnMouseMove);
   }
-
   $: normalizedLang = normalizeCodeLang(lang);
   $: codeFriendlyName = getLanguageFriendlyName(lang);
-
   function getMouseInfo(event: MouseEvent): {
     codeDOMNode: HTMLElement | null;
     isOutside: boolean;
   } {
     const target = event.target;
-
     if (target && target instanceof HTMLElement) {
       const codeDOMNode = target.closest<HTMLElement>(
         'code.PlaygroundEditorTheme__code',
@@ -130,14 +112,12 @@
         codeDOMNode ||
         target.closest<HTMLElement>('div.code-action-menu-container')
       );
-
       return {codeDOMNode, isOutside};
     } else {
       return {codeDOMNode: null, isOutside: true};
     }
   }
 </script>
-
 {#if isShown}
   <div
     class="code-action-menu-container"
@@ -149,7 +129,6 @@
     {/if}
   </div>
 {/if}
-
 <style>
   :global(.code-action-menu-container) {
     height: 35.8px;
@@ -161,11 +140,9 @@
     flex-direction: row;
     user-select: none;
   }
-
   :global(.code-action-menu-container .code-highlight-language) {
     margin-right: 4px;
   }
-
   :global(.code-action-menu-container button.menu-item) {
     border: 1px solid transparent;
     border-radius: 4px;
@@ -178,7 +155,6 @@
     color: rgba(0, 0, 0, 0.5);
     text-transform: uppercase;
   }
-
   :global(.code-action-menu-container button.menu-item i.format) {
     height: 16px;
     width: 16px;
@@ -187,12 +163,10 @@
     color: rgba(0, 0, 0, 0.5);
     background-size: contain;
   }
-
   :global(.code-action-menu-container button.menu-item:hover) {
     border: 1px solid rgba(0, 0, 0, 0.3);
     opacity: 0.9;
   }
-
   :global(.code-action-menu-container button.menu-item:active) {
     background-color: rgba(223, 232, 250);
     border: 1px solid rgba(0, 0, 0, 0.45);

@@ -21,18 +21,24 @@ export * from './core/plugins/link/url';
 export {default as FloatingLinkEditorPlugin} from './core/plugins/link/FloatingLinkEditorPlugin.svelte';
 export {default as CodeHighlightPlugin} from './core/plugins/CodeBlock/CodeHighlightPlugin.svelte';
 export {default as CodeActionMenuPlugin} from './core/plugins/CodeBlock/CodeActionMenuPlugin/CodeActionMenuPlugin.svelte';
-
-export {HeadingNode, QuoteNode} from '@lexical/rich-text';
-export {ListNode, ListItemNode} from '@lexical/list';
+import pkgrich from '@lexical/rich-text';
+const {HeadingNode, QuoteNode} = pkgrich;
+export {HeadingNode, QuoteNode}
+import pkglist from '@lexical/list';
+const {ListItemNode, ListNode} = pkglist;
+export {ListNode, ListItemNode}
 export {HorizontalRuleNode} from './core/plugins/HorizontalRuleNode';
 export {ImageNode} from './core/plugins/Image/ImageNode';
 export {KeywordNode} from './core/plugins/KeywordNode';
 export {HashtagNode} from './core/plugins/HashtagNode';
-export {AutoLinkNode, LinkNode} from '@lexical/link';
-export {CodeNode, CodeHighlightNode} from '@lexical/code';
+import pkglink from '@lexical/link';
+const {AutoLinkNode, LinkNode} = pkglink;
+export {AutoLinkNode, LinkNode}
+import pkgcode from '@lexical/code';
+const {CodeNode, CodeHighlightNode} = pkgcode;
+export {CodeNode, CodeHighlightNode}
 export type {Provider} from '@lexical/yjs';
 export * as lexical from 'lexical';
-
 // toolbar
 export {default as ToolbarRichText} from './components/richtext/ToolbarRichText.svelte';
 export {default as Toolbar} from './components/toolbar/Toolbar.svelte';
@@ -65,30 +71,28 @@ export {default as CodeLanguageDropDown} from './components/toolbar/CodeLanguage
 export {default as InsertImageDialog} from './components/toolbar/dialogs/InsertImageDialog.svelte';
 export {default as InsertImageUploadedDialogBody} from './components/toolbar/dialogs/InsertImageUploadedDialogBody.svelte';
 export {default as InsertImageUriDialogBody} from './components/toolbar/dialogs/InsertImageUriDialogBody.svelte';
-
 export {getCommands} from './core/commands';
 export type {ImagePayload} from './core/plugins/Image/ImageNode';
 export {getEditor, getActiveEditor} from './core/composerContext';
-
 export {default as ActionBar} from './components/actionbar/ActionBar.svelte';
 export {default as TreeViewPlugin} from './core/plugins/TreeView/TreeViewPlugin.svelte';
-
 export {default as ContentEditable} from './core/ContentEditable.svelte';
 export {default as Composer} from './core/Composer.svelte';
-
 export {default as RichTextComposer} from './components/richtext/RichTextComposer.svelte';
-
 export type {EditorThemeClasses, LexicalEditor} from 'lexical';
-export {$createParagraphNode, $createTextNode, $getRoot} from 'lexical';
-export {$createHeadingNode, $createQuoteNode} from '@lexical/rich-text';
-export {$createLinkNode} from '@lexical/link';
-export {$createListItemNode, $createListNode} from '@lexical/list';
-
+import pkgLexical from 'lexical';
+const {$createParagraphNode, $createTextNode, $getRoot} = pkgLexical;
+export {$createParagraphNode, $createTextNode, $getRoot}
+const {$createHeadingNode, $createQuoteNode} = pkgrich;
+export {$createHeadingNode, $createQuoteNode}
+const {$createLinkNode} = pkglink;
+export {$createLinkNode}
+const {$createListItemNode, $createListNode} = pkglist;
+export {$createListItemNode, $createListNode}
 // ui components
 export {default as DropDown} from './components/generic/dropdown/DropDown.svelte';
 export {default as DropDownItem} from './components/generic/dropdown/DropDownItem.svelte';
 export {default as ModalDialog} from './components/generic/dialog/ModalDialog.svelte';
 export {default as CloseCircleButton} from './components/generic/button/CloseCircleButton.svelte';
-
 // util
 export {CAN_USE_DOM} from './environment/canUseDOM';

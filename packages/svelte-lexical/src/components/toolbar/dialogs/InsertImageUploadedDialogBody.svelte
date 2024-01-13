@@ -4,14 +4,11 @@
   import TextInput from '../../generic/input/TextInput.svelte';
   import {INSERT_IMAGE_COMMAND} from '../../../core/plugins/Image/ImagePlugin.svelte';
   import FileInput from '../../generic/input/FileInput.svelte';
-
   const activeEditor = getActiveEditor();
   const dispatch = createEventDispatcher();
-
   let src = '';
   let altText = '';
   $: isDisabled = src === '';
-
   function loadImage(files: FileList | null) {
     const reader = new FileReader();
     reader.onload = function () {
@@ -25,7 +22,6 @@
     }
   }
 </script>
-
 <div class="modal">
   <h2 class="Modal__title">Insert Image</h2>
   <div class="Modal__content">
@@ -53,7 +49,6 @@
     </div>
   </div>
 </div>
-
 <style>
   .modal {
     width: 30em;

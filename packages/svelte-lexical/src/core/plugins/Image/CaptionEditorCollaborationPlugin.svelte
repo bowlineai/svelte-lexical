@@ -3,13 +3,11 @@
   import {setImageHistoryPluginType} from '../../composerContext';
   import type {Provider} from '@lexical/yjs';
   import type {Doc} from 'yjs';
-
   export let providerFactory: (
     // eslint-disable-next-line no-shadow
     id: string,
     yjsDocMap: Map<string, Doc>,
   ) => Provider;
-
   setImageHistoryPluginType({
     componentType: CollaborationPlugin,
     props: {

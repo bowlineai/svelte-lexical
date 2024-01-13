@@ -8,29 +8,24 @@ import type {
   EditorConfig,
   LexicalEditor,
 } from 'lexical';
-import {createCommand, DecoratorNode, $applyNodeReplacement} from 'lexical';
+import pkgLexical from 'lexical';
+const {createCommand, DecoratorNode, $applyNodeReplacement} = pkgLexical;
 import HorizontalRuleComponent from './HorizontalRuleComponent.svelte';
-
 export type SerializedHorizontalRuleNode = SerializedLexicalNode;
-
 export const INSERT_HORIZONTAL_RULE_COMMAND: LexicalCommand<void> =
   createCommand('INSERT_HORIZONTAL_RULE_COMMAND');
-
 export class HorizontalRuleNode extends DecoratorNode<unknown> {
   static getType(): string {
     return 'horizontalrule';
   }
-
   static clone(node: HorizontalRuleNode): HorizontalRuleNode {
     return new HorizontalRuleNode(node.__key);
   }
-
   static importJSON(
     serializedNode: SerializedHorizontalRuleNode,
   ): HorizontalRuleNode {
     return $createHorizontalRuleNode();
   }
-
   static importDOM(): DOMConversionMap | null {
     return {
       hr: () => ({
@@ -39,27 +34,22 @@ export class HorizontalRuleNode extends DecoratorNode<unknown> {
       }),
     };
   }
-
   /**
    * It tells `Decorater.svelte` that this component doesn't need rendering during decorator listener call.
    * `this.decorate` should also return null when skipDecorateRender is true
    */
   static skipDecorateRender = true;
-
   exportJSON(): SerializedLexicalNode {
     return {
       type: 'horizontalrule',
       version: 1,
     };
   }
-
   exportDOM(): DOMExportOutput {
     return {element: document.createElement('hr')};
   }
-
   createDOM(editorConfig: EditorConfig, editor: LexicalEditor): HTMLElement {
     const hr = document.createElement('hr');
-
     new HorizontalRuleComponent({
       target: hr,
       props: {
@@ -68,22 +58,17 @@ export class HorizontalRuleNode extends DecoratorNode<unknown> {
         self: hr,
       },
     });
-
     return hr;
   }
-
   getTextContent(): string {
     return '\n';
   }
-
   isInline(): false {
     return false;
   }
-
   updateDOM(): boolean {
     return false;
   }
-
   /**
    * @returns should return null if not participating in decorator rendering (skipDecorateRender should also be true)
    */
@@ -91,15 +76,12 @@ export class HorizontalRuleNode extends DecoratorNode<unknown> {
     return null;
   }
 }
-
 function convertHorizontalRuleElement(): DOMConversionOutput {
   return {node: $createHorizontalRuleNode()};
 }
-
 export function $createHorizontalRuleNode(): HorizontalRuleNode {
   return $applyNodeReplacement(new HorizontalRuleNode());
 }
-
 export function $isHorizontalRuleNode(
   node: LexicalNode | null | undefined,
 ): node is HorizontalRuleNode {

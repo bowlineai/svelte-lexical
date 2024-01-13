@@ -1,31 +1,30 @@
 <script lang="ts">
-  import {mergeRegister} from '@lexical/utils';
-  import {
-    $getNodeByKey as getNodeByKey,
-    $getSelection as getSelection,
-    $isNodeSelection as isNodeSelection,
+  import pkgutils from '@lexical/utils';
+  const {mergeRegister} = pkgutils;
+  import type {LexicalEditor} from 'lexical';
+  import pkgLexical from 'lexical';
+  const {
+    $getNodeByKey: getNodeByKey,
+    $getSelection: getSelection,
+    $isNodeSelection: isNodeSelection,
     CLICK_COMMAND,
     COMMAND_PRIORITY_LOW,
     KEY_BACKSPACE_COMMAND,
     KEY_DELETE_COMMAND,
-    type LexicalEditor,
-  } from 'lexical';
+  } = pkgLexical;
   import {onMount} from 'svelte';
   import {
     clearSelection,
     createNodeSelectionStore,
   } from '../nodeSelectionStore';
   import {$isHorizontalRuleNode as isHorizontalRuleNode} from './HorizontalRuleNode';
-
   export let editor: LexicalEditor;
   export let nodeKey: string;
   export let self: HTMLElement;
   let isSelected = createNodeSelectionStore(editor, nodeKey);
-
   $: {
     self.className = $isSelected ? 'selected' : '';
   }
-
   function onDelete(event: KeyboardEvent) {
     if ($isSelected && isNodeSelection(getSelection())) {
       event.preventDefault();
@@ -37,7 +36,6 @@
     }
     return false;
   }
-
   onMount(() => {
     return mergeRegister(
       editor.registerCommand(
