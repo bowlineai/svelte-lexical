@@ -7,13 +7,10 @@ export {default as CheckListPlugin} from './core/plugins/CheckListPlugin.svelte'
 export {default as HorizontalRulePlugin} from './core/plugins/HorizontalRulePlugin.svelte';
 export {default as ImagePlugin} from './core/plugins/Image/ImagePlugin.svelte';
 export {default as CaptionEditorHistoryPlugin} from './core/plugins/Image/CaptionEditorHistoryPlugin.svelte';
-export {default as CaptionEditorCollaborationPlugin} from './core/plugins/Image/CaptionEditorCollaborationPlugin.svelte';
 export {default as PlaceHolder} from './core/plugins/PlaceHolder.svelte';
 export {default as AutoFocusPlugin} from './core/plugins/AutoFocusPlugin.svelte';
 export {default as KeywordPlugin} from './core/plugins/KeywordPlugin.svelte';
 export {default as HashtagPlugin} from './core/plugins/HashtagPlugin.svelte';
-export {default as CollaborationPlugin} from './core/plugins/collaboration/CollaborationPlugin.svelte';
-//export {createWebsocketProvider} from './core/plugins/collaboration/collaboration';
 export {default as AutoLinkPluginCore} from './core/plugins/AutoLink/AutoLinkPluginCore.svelte';
 export {default as AutoLinkPlugin} from './core/plugins/AutoLink/AutoLinkPlugin.svelte';
 export {default as LinkPlugin} from './core/plugins/link/LinkPlugin.svelte';
@@ -37,7 +34,6 @@ export {AutoLinkNode, LinkNode}
 import pkgcode from '@lexical/code';
 const {CodeNode, CodeHighlightNode} = pkgcode;
 export {CodeNode, CodeHighlightNode}
-export type {Provider} from '@lexical/yjs';
 export * as lexical from 'lexical';
 // toolbar
 export {default as ToolbarRichText} from './components/richtext/ToolbarRichText.svelte';

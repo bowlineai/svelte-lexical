@@ -229,14 +229,6 @@
   <div class="image-caption-container">
     <NestedComposer initialEditor={caption} parentEditor={editor}>
       <AutoFocusPlugin />
-      <!-- {#if isCollabActive}
-        <CollaborationPlugin
-          id={caption.getKey()}
-          providerFactory={createWebsocketProvider}
-          shouldBootstrap={true} />
-      {:else}
-        <SharedHistoryPlugin />
-      {/if} -->
       <svelte:component
         this={historyPlugin.componentType}
         {...historyPlugin.props} />
