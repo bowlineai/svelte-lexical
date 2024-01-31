@@ -228,6 +228,9 @@ importers:
       '@lexical/hashtag':
         specifier: 0.11.1
         version: 0.11.1(lexical@0.11.1)
+      '@lexical/headless':
+        specifier: 0.11.1
+        version: 0.11.1(lexical@0.11.1)
       '@lexical/history':
         specifier: 0.11.1
         version: 0.11.1(lexical@0.11.1)
@@ -2220,6 +2223,14 @@ packages:
       lexical: 0.11.1
     dependencies:
       '@lexical/utils': 0.11.1(lexical@0.11.1)
+      lexical: 0.11.1
+    dev: false
+
+  /@lexical/headless@0.11.1(lexical@0.11.1):
+    resolution: {integrity: sha512-RqKE5zEAMFHxNv788jR48Dh1Y3HJKQnce2SUfEExQqUB1lqj9IGFePpPs6IrjxzNrOoXRdHt5GTrgGh+kW0fqA==}
+    peerDependencies:
+      lexical: 0.11.1
+    dependencies:
       lexical: 0.11.1
     dev: false
 
