@@ -1,7 +1,7 @@
 {
   "name": "@bowline/svelte-lexical",
   "description": "Rich Text editor for Svelte based on lexical",
-  "version": "0.7.5",
+  "version": "0.7.6",
   "type": "module",
   "license": "MIT",
   "repository": {
